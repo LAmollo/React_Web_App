@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3000/api', // Adjust baseURL based on your backend URL
+  baseURL: 'http://localhost:3000/api', 
 });
 
 let userData = JSON.parse(localStorage.getItem('userData'));
