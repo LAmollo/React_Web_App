@@ -1,0 +1,20 @@
+@import "./assets/Navbar.scss";
+@import "./assets/Home.scss";
+@import "./assets/SearchBox.scss";
+@import "./assets/MoviesList.scss";
+@import "./assets/Movie.scss";
+@import "./assets/Favorites.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
