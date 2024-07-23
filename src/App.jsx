@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import { useEffect, useState } from "react";
@@ -9,26 +9,40 @@ export default function App() {
   const [favoriteMovies, setFavoriteMovies] = useState([]);
   const [storedFavorites, setStoredFavorites] = useState([]);
 
+  // Save favorite movies to local storage
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favoriteMovies));
   }, [favoriteMovies]);
 
+  // Load favorite movies from local storage on component mount
   useEffect(() => {
     const localValuesGet = JSON.parse(localStorage.getItem("favorites"));
-    setStoredFavorites(localValuesGet);
-  }, [favoriteMovies]);
+    if (localValuesGet) {
+      setStoredFavorites(localValuesGet);
+    }
+  }, []);
 
-  async function getMovies(url) {
-    const data = await fetch(url);
-    const res = await data.json();
-    setMovies(res);
+  // Function to fetch movies using AJAX (XMLHttpRequest)
+  function getMovies(url) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        const res = JSON.parse(xhr.responseText);
+        if (res.Search) {
+          setMovies(res.Search);
+        }
+      }
+    };
+    xhr.send();
   }
 
+  // Fetch movies from the OMDB API when movieInput changes
   useEffect(() => {
-    getMovies(`https://www.omdbapi.com/?s=${movieInput}&apikey=738237a0`);
+    const apiKey = "42c99ae0"; // Replace with your actual OMDB API key
+    const url = `https://www.omdbapi.com/?s=${movieInput}&apikey=${apiKey}`;
+    getMovies(url);
   }, [movieInput]);
-
-  // console.log(favoriteMovies);
 
   return (
     <BrowserRouter>
@@ -37,7 +51,7 @@ export default function App() {
           path="/"
           element={
             <Home
-              movies={movies.Search}
+              movies={movies}
               movieInput={movieInput}
               setMovieInput={setMovieInput}
               favoriteMovies={favoriteMovies}
