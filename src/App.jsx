@@ -39,7 +39,7 @@ export default function App() {
 
   // Fetch movies from the OMDB API when movieInput changes
   useEffect(() => {
-    const apiKey = "42c99ae0"; // Replace with your actual OMDB API key
+    const apiKey = import.meta.env.VITE_OMDB_API_KEY; // Accessing the API key from the .env file
     const url = `https://www.omdbapi.com/?s=${movieInput}&apikey=${apiKey}`;
     getMovies(url);
   }, [movieInput]);
